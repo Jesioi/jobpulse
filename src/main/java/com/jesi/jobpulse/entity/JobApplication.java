@@ -10,7 +10,7 @@ import lombok.*; //导入Lombok相关的注解和类
 @AllArgsConstructor
 @Entity
 @Table(name = "job_applications") //指定数据库表名,只要你改这里，Hibernate 就会认新的表。
-public class JobApplication {
+public class JobApplication extends BaseEntity {
 
     @Id //标记为主键
     @GeneratedValue(strategy = GenerationType.IDENTITY) //自动生成主键值
@@ -26,7 +26,7 @@ public class JobApplication {
 
     @Enumerated(EnumType.STRING) //将枚举类型以字符串形式存储在数据库中
     @Column(nullable = false)
-    private String status;
+    private JobApplicationStatus status; 
 
     private LocalDate applicationDate; //使用LocalDate表示日期
 
@@ -38,20 +38,6 @@ public class JobApplication {
 
     @Column(nullable = false)
     private Instant updatedAt;
-
-    @PrePersist //在实体被持久化之前调用的方法，通常用于设置创建时间和更新时间
-    void onCreate() {
-        Instant now = Instant.now(); ///now() 是Instant类的一个静态方法，用于获取当前的时间戳
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
-
-    @PreUpdate //
-    void onUpdate() {
-        this.updatedAt = Instant.now();
-    }
-
-
 
 
 }
